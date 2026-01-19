@@ -151,7 +151,7 @@ SECRET_KEY = 'django-insecure-p0lfg3qai@hznaclm-z3v=vkdks7f&pp#-d1t@4fk+hd-qd1qr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', '1') == '1'
 
-ALLOWED_HOSTS = ["mglrndm.online", "www.mglrndm.online", "107.20.37.59", "promo.buteekhui.com", "buteekhui.com", "promo.makhimpex.mn", "makhimpex.mn", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["ciher.store", "www.ciher.store", "43.203.77.72", "promo.makhimpex.mn", "makhimpex.mn", "localhost", "127.0.0.1"]
 
 
 # Application definition

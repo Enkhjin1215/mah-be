@@ -10,6 +10,13 @@ class LotteryViewSet(viewsets.ModelViewSet):
     serializer_class = LotterySerializer
 
 
+class LotteryNumberAllView(APIView):
+    def get(self, request):
+        numbers = list(
+            Lottery.objects.order_by("-created_at")
+            .values_list("lottery_number", flat=True)
+        )
+        return Response(numbers)
 
 
 class LotteryByPhoneView(APIView):

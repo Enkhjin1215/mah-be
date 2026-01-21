@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from app.views import LotteryViewSet, LotteryByPhoneView
+from app.views import LotteryViewSet, LotteryByPhoneView, LotteryNumberAllView
 
 
 router = DefaultRouter()
@@ -16,6 +16,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
     path('by-phone/', LotteryByPhoneView.as_view(), name='lottery-by-phone'),
+    path("lotteries/numbers/all/", LotteryNumberAllView.as_view(), name="lottery-numbers-all"),
 
 ]
 

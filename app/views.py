@@ -4,18 +4,25 @@ from .serializers import LotterySerializer
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.utils import timezone
+from datetime import timedelta
 
 class LotteryViewSet(viewsets.ModelViewSet):
     queryset = Lottery.objects.all()
     serializer_class = LotterySerializer
 
 
+
 class LotteryNumberAllView(APIView):
     def get(self, request):
+        last_7_days = timezone.now() - timedelta(days=7)
+
         numbers = list(
-            Lottery.objects.order_by("-created_at")
+            Lottery.objects.filter(created_at__gte=last_7_days)
+            .order_by("-created_at")
             .values_list("lottery_number", flat=True)
         )
+
         return Response(numbers)
 
 

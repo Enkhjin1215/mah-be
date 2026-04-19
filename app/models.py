@@ -78,7 +78,7 @@ class LotteryCampaign(models.Model):
 
 
 class Lottery(models.Model):
-    campaign = models.ForeignKey(LotteryCampaign, on_delete=models.CASCADE, related_name='lotteries')
+    campaign = models.ForeignKey(LotteryCampaign, on_delete=models.SET_NULL, null=True, blank=True, related_name='lotteries')
     phone_number = models.CharField(max_length=15)
     lottery_number = models.CharField(max_length=50)
     ebarimt_picture = models.FileField(upload_to='ebarimt_pictures/')

@@ -1,7 +1,7 @@
 import pandas as pd
 from django.contrib import admin
 from django.http import HttpResponse
-from .models import Lottery
+from .models import Lottery, LotteryCampaign
 
 
 def export_lottery_to_excel(modeladmin, request, queryset):
@@ -30,6 +30,18 @@ def export_lottery_to_excel(modeladmin, request, queryset):
     return response
 
 export_lottery_to_excel.short_description = "Export selected lotteries to Excel"
+
+
+@admin.register(LotteryCampaign)
+class LotteryCampaignAdmin(admin.ModelAdmin):
+    list_display = ('name', 'start_date', 'end_date', 'is_active', 'is_ongoing')
+    list_filter = ('is_active',)
+    search_fields = ('name',)
+
+    def is_ongoing(self, obj):
+        return obj.is_ongoing()
+    is_ongoing.boolean = True
+    is_ongoing.short_description = 'Явагдаж байна'
 
 
 @admin.register(Lottery)

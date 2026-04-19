@@ -56,7 +56,29 @@ class Users(AbstractBaseUser, PermissionsMixin):
         db_table = 'users'
 
 
+class LotteryCampaign(models.Model):
+    name = models.CharField(max_length=200)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def is_ongoing(self):
+        today = timezone.now().date()
+        return self.is_active and self.start_date <= today <= self.end_date
+
+    def __str__(self):
+        return f"{self.name} ({self.start_date} - {self.end_date})"
+
+    class Meta:
+        db_table = 'lottery_campaign'
+        verbose_name = 'Lottery Campaign'
+        verbose_name_plural = 'Lottery Campaigns'
+
+
 class Lottery(models.Model):
+    campaign = models.ForeignKey(LotteryCampaign, on_delete=models.CASCADE, related_name='lotteries')
     phone_number = models.CharField(max_length=15)
     lottery_number = models.CharField(max_length=50)
     ebarimt_picture = models.FileField(upload_to='ebarimt_pictures/')
@@ -67,11 +89,10 @@ class Lottery(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     updated_at = models.DateTimeField(auto_now=True, null=False, blank=False)
 
-
     def __str__(self):
         return f"{self.phone_number} - {self.lottery_number}"
 
     class Meta:
-        db_table = 'lottery_table'  # Энд хүссэн table нэрээ өгнө
+        db_table = 'lottery_table'
         verbose_name = 'Lottery'
         verbose_name_plural = 'Lotteries'

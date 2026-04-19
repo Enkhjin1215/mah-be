@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Lottery
-from .serializers import LotterySerializer
+from .models import Lottery, LotteryCampaign
+from .serializers import LotterySerializer, LotteryCampaignSerializer
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,6 +10,13 @@ class LotteryViewSet(viewsets.ModelViewSet):
     serializer_class = LotterySerializer
 
 
+
+
+class LotteryCampaignListView(APIView):
+    def get(self, request):
+        campaigns = LotteryCampaign.objects.all()
+        serializer = LotteryCampaignSerializer(campaigns, many=True)
+        return Response(serializer.data)
 
 
 class LotteryByPhoneView(APIView):

@@ -78,16 +78,29 @@ class LotteryCampaign(models.Model):
 
 
 class Lottery(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'pending', 'Pending'
+        ACTIVE = 'active', 'Active'
+        REJECTED = 'rejected', 'Rejected'
+
     campaign = models.ForeignKey(LotteryCampaign, on_delete=models.SET_NULL, null=True, blank=True, related_name='lotteries')
     phone_number = models.CharField(max_length=15)
-    lottery_number = models.CharField(max_length=50)
+    lottery_number = models.CharField(max_length=50, unique=True, blank=True)
     ebarimt_picture = models.FileField(upload_to='ebarimt_pictures/')
     aimag = models.CharField(max_length=50)
     sum = models.CharField(max_length=50)
     horoo = models.CharField(max_length=50)
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     updated_at = models.DateTimeField(auto_now=True, null=False, blank=False)
+
+    def save(self, *args, **kwargs):
+        if not self.lottery_number:
+            super().save(*args, **kwargs)
+            self.lottery_number = f"LOT-{self.id:06d}"
+            Lottery.objects.filter(pk=self.pk).update(lottery_number=self.lottery_number)
+            return
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.phone_number} - {self.lottery_number}"

@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Lottery, LotteryCampaign
 
 class LotterySerializer(serializers.ModelSerializer):
+    lottery_number = serializers.CharField(read_only=True)
+
     class Meta:
         model = Lottery
         fields = '__all__'
